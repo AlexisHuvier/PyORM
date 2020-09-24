@@ -1,12 +1,12 @@
-import mysql.connector
+import psycopg2
 
-from pdo import PDOSQLException
+from pyorm.pdo import PDOSQLException
 
-__all__ = ["MySQLDatabase"]
+__all__ = ["PostgreSQLDatabase"]
 
-class MySQLDatabase:
+class PostgreSQLDatabase:
     def __init__(self, args):
-        self.connection = mysql.connector.connect(host=args["host"], user=args["user"], password=args["passwd"], database=args["db"])
+        self.connection = psycopg2.connect("host=%s dbname=%s user=%s password=%s" % (args["host"], args["db"], args["user"], args["passwd"]))
         self.cursor = self.connection.cursor()
     
     def execute(self, query, tuples=None):
@@ -17,7 +17,7 @@ class MySQLDatabase:
                 self.cursor.execute(query)
             else:
                 self.cursor.execute(query, tuples)
-        except mysql.connector.Error as e:
+        except psycopg2.Error as e:
             error = str(e)
         if error is not None:
             raise PDOSQLException(error)
@@ -26,7 +26,7 @@ class MySQLDatabase:
         error = None
         try:
             return self.cursor.fetchall()
-        except mysql.connector.Error as e:
+        except psycopg2.Error as e:
             error = str(e)
         if error is not None:
             raise PDOSQLException(error)
@@ -35,7 +35,7 @@ class MySQLDatabase:
         error = None
         try:
             return self.cursor.fetchone()
-        except mysql.connector.Error as e:
+        except psycopg2.Error as e:
             error = str(e)
         if error is not None:
             raise PDOSQLException(error)
@@ -45,7 +45,7 @@ class MySQLDatabase:
         try:
             self.cursor.close()
             self.connection.close()
-        except mysql.connector.Error as e:
+        except psycopg2.Error as e:
             error = str(e)
         if error is not None:
             raise PDOSQLException(error)

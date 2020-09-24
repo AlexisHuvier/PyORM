@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 import pyorm
 
 setup(
-    name='PyORM',
+    name='pyorm-pip',
     version=pyorm.__version__,
     description='An object-relational mapper (ORM) in Python',
     url='https://github.com/AlexisHuvier/PyORM',

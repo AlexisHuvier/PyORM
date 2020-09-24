@@ -1,6 +1,6 @@
 __all__ = ["PDO"]
 
-from pdo.exception import PDOException, PDOConnectionException
+from pyorm.pdo.exception import PDOException, PDOConnectionException
 
 class PDO:
     requirements = {
@@ -19,15 +19,15 @@ class PDO:
                     if i not in connection_infos.keys():
                         raise PDOConnectionException("Expect '"+i+"' argument in connection string")
                 if self.module == "sqlite":
-                    from pdo.databases.sqlite_database import SQLiteDatabase
+                    from pyorm.pdo.databases.sqlite_database import SQLiteDatabase
 
                     self.db = SQLiteDatabase(connection_infos)
                 elif self.module == "mysql":
-                    from pdo.databases.mysql_database import MySQLDatabase
+                    from pyorm.pdo.databases.mysql_database import MySQLDatabase
 
                     self.db = MySQLDatabase(connection_infos)
                 elif self.module == "postgresql":
-                    from pdo.databases.postgresql_database import PostgreSQLDatabase
+                    from pyorm.pdo.databases.postgresql_database import PostgreSQLDatabase
 
                     self.db = PostgreSQLDatabase(connection_infos)
             else:

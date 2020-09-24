@@ -1,12 +1,12 @@
-import sqlite3
+import mysql.connector
 
-from pdo import PDOSQLException
+from pyorm.pdo import PDOSQLException
 
-__all__ = ["SQLiteDatabase"]
+__all__ = ["MySQLDatabase"]
 
-class SQLiteDatabase:
+class MySQLDatabase:
     def __init__(self, args):
-        self.connection = sqlite3.connect(args["db"])
+        self.connection = mysql.connector.connect(host=args["host"], user=args["user"], password=args["passwd"], database=args["db"])
         self.cursor = self.connection.cursor()
     
     def execute(self, query, tuples=None):
@@ -17,7 +17,7 @@ class SQLiteDatabase:
                 self.cursor.execute(query)
             else:
                 self.cursor.execute(query, tuples)
-        except sqlite3.Error as e:
+        except mysql.connector.Error as e:
             error = str(e)
         if error is not None:
             raise PDOSQLException(error)
@@ -26,7 +26,7 @@ class SQLiteDatabase:
         error = None
         try:
             return self.cursor.fetchall()
-        except sqlite3.Error as e:
+        except mysql.connector.Error as e:
             error = str(e)
         if error is not None:
             raise PDOSQLException(error)
@@ -35,7 +35,7 @@ class SQLiteDatabase:
         error = None
         try:
             return self.cursor.fetchone()
-        except sqlite3.Error as e:
+        except mysql.connector.Error as e:
             error = str(e)
         if error is not None:
             raise PDOSQLException(error)
@@ -45,7 +45,7 @@ class SQLiteDatabase:
         try:
             self.cursor.close()
             self.connection.close()
-        except sqlite3.Error as e:
+        except mysql.connector.Error as e:
             error = str(e)
         if error is not None:
             raise PDOSQLException(error)

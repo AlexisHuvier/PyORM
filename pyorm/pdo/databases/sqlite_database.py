@@ -1,12 +1,12 @@
-import psycopg2
+import sqlite3
 
-from pdo import PDOSQLException
+from pyorm.pdo import PDOSQLException
 
-__all__ = ["PostgreSQLDatabase"]
+__all__ = ["SQLiteDatabase"]
 
-class PostgreSQLDatabase:
+class SQLiteDatabase:
     def __init__(self, args):
-        self.connection = psycopg2.connect("host=%s dbname=%s user=%s password=%s" % (args["host"], args["db"], args["user"], args["passwd"]))
+        self.connection = sqlite3.connect(args["db"])
         self.cursor = self.connection.cursor()
     
     def execute(self, query, tuples=None):
@@ -17,7 +17,7 @@ class PostgreSQLDatabase:
                 self.cursor.execute(query)
             else:
                 self.cursor.execute(query, tuples)
-        except psycopg2.Error as e:
+        except sqlite3.Error as e:
             error = str(e)
         if error is not None:
             raise PDOSQLException(error)
@@ -26,7 +26,7 @@ class PostgreSQLDatabase:
         error = None
         try:
             return self.cursor.fetchall()
-        except psycopg2.Error as e:
+        except sqlite3.Error as e:
             error = str(e)
         if error is not None:
             raise PDOSQLException(error)
@@ -35,7 +35,7 @@ class PostgreSQLDatabase:
         error = None
         try:
             return self.cursor.fetchone()
-        except psycopg2.Error as e:
+        except sqlite3.Error as e:
             error = str(e)
         if error is not None:
             raise PDOSQLException(error)
@@ -45,7 +45,7 @@ class PostgreSQLDatabase:
         try:
             self.cursor.close()
             self.connection.close()
-        except psycopg2.Error as e:
+        except sqlite3.Error as e:
             error = str(e)
         if error is not None:
             raise PDOSQLException(error)
