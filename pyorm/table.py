@@ -39,8 +39,11 @@ class Table:
         cls.db.pdo.execute("DELETE FROM "+cls.__name__.lower()+";")
 
     @classmethod
-    def get_all(cls):
-        cls.db.pdo.execute("SELECT * FROM "+cls.__name__.lower())
+    def get_all(cls, condition = None):
+        if condition is not None:
+            cls.db.pdo.execute("SELECT * FROM "+cls.__name__.lower()+" WHERE "+condition)
+        else:
+            cls.db.pdo.execute("SELECT * FROM "+cls.__name__.lower())
         results = cls.db.pdo.fetchall()
         final_results = []
         for result in results:
