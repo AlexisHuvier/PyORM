@@ -12,9 +12,8 @@ class Person(Table):
 
 Person.create()
 Person.delete_all()
-print(Person.get_all())
-michel = Person(name="Michel")
-print(michel)
-michel.save()
-for i in Person.get_all():
+Person(name="Lyos").save()
+Person(name="Hugo").save()
+print(Person.get_one("name = 'Hugo'"))
+for i in Person.get_all("name = 'Lyos'"):
     print(i)
