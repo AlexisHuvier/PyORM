@@ -46,6 +46,16 @@ class Table:
         for result in results:
             final_results.append(eval(cls.__result_to_class(result)))
         return final_results
+    
+    @classmethod
+    def get_one(cls, condition = None):
+        if condition is not None:
+            cls.db.pdo.execute("SELECT * FROM "+cls.__name__.lower()+" WHERE "+condition)
+        else:
+            cls.db.pdo.execute("SELECT * FROM "+cls.__name__.lower())
+        result = cls.db.pdo.fetchone()
+        if result is not None:
+            return eval(cls.__result_to_class(result))
 
     @classmethod
     def __result_to_class(cls, result):
