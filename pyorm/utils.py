@@ -1,6 +1,6 @@
 class ValueType:
     VARCHAR = "VARCHAR"
-    INT = "INT"
+    INT = "INTEGER"
     BOOL = "BOOLEAN"
     NULL = "NULL"
     FLOAT = "FLOAT"
